@@ -1,0 +1,47 @@
+{
+    "name": "ababilitworld/flex-wordpress-by-ababilitworld",
+    "description": "A package to manage wordpress framework by Ababil IT World.",
+    "keywords": ["wordpress", "php"],
+    "type": "library",
+    "license": "MIT",
+    "license_uri": "https://opensource.org/licenses/MIT",
+    "authors": [
+        {
+            "name": "Ababil It World",
+            "email": "ababilitworld@gmail.com",
+            "homepage": "https://ababilitworld.com/"
+        },
+        {
+            "name": "Md Shafiul Alam",
+            "email": "cse.shafiul@gmail.com",
+            "homepage": "https://ababilitworld.com/"
+        },
+        {
+            "name": "Premium Addons",
+            "email": "premiumaddons@gmail.com",
+            "homepage": "https://ababilitworld.com/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ababilitworld\\FlexWordpressByAbabilitworld\\": "src/"
+        },
+        "files": [
+            "includes.php"
+        ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ababilitworld\\FlexWordpressByAbabilitworld\\": "Test/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/ababilitworld/flex-wordpress-by-ababilitworld"
+        }
+    ]
+}

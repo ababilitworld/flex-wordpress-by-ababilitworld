@@ -1,22 +1,19 @@
 <?php
-namespace Ababilitworld\FlexWordpressByAbabilitworld\Package\Test\Menu;
+namespace Ababilitworld\FlexTestByAbabilitworld\Package\Test\Menu;
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
     FlexWordpressByAbabilitworld\Package\Menu\Base\Menu as BaseMenu,
-    FlexWordpressByAbabilitworld\Package\Test\Setting\Setting as Setting,
-    FlexWordpressByAbabilitworld\Package\Test\Service\Service as TestService,
-    FlexWordpressByAbabilitworld\Package\Test\Presentation\Template\Template as TestTemplate
 };
 
 use const Ababilitworld\{
-    FlexWordpressByAbabilitworld\PLUGIN_NAME,
-    FlexWordpressByAbabilitworld\PLUGIN_DIR,
-    FlexWordpressByAbabilitworld\PLUGIN_URL,
-    FlexWordpressByAbabilitworld\PLUGIN_FILE,
-    FlexWordpressByAbabilitworld\PLUGIN_PRE_UNDS,
-    FlexWordpressByAbabilitworld\PLUGIN_PRE_HYPH,
-    FlexWordpressByAbabilitworld\PLUGIN_VERSION
+    FlexTestByAbabilitworld\PLUGIN_NAME,
+    FlexTestByAbabilitworld\PLUGIN_DIR,
+    FlexTestByAbabilitworld\PLUGIN_URL,
+    FlexTestByAbabilitworld\PLUGIN_FILE,
+    FlexTestByAbabilitworld\PLUGIN_PRE_UNDS,
+    FlexTestByAbabilitworld\PLUGIN_PRE_HYPH,
+    FlexTestByAbabilitworld\PLUGIN_VERSION
 };
 
 (defined( 'ABSPATH' ) && defined( 'WPINC' )) || exit();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ababilitworld\FlexWordpressByAbabilitworld\Package\Base;
+namespace Ababilitworld\FlexWordpressByAbabilitworld\Package\Posttype\Base;
 
 (defined('ABSPATH') && defined('WPINC')) || die();
 

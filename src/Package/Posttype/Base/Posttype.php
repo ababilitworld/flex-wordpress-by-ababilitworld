@@ -21,11 +21,11 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
 
         private static array $instances = [];
 
-        protected string $posttype;
-        protected string $slug;
-        protected string $singular;
-        protected string $plural;
-        protected string $textdomain;
+        protected string $posttype = '';
+        protected string $slug = '';
+        protected string $singular = '';
+        protected string $plural = '';
+        protected string $textdomain = '';
 
         protected array $defaultLabels = [];
         protected array $labels = [];

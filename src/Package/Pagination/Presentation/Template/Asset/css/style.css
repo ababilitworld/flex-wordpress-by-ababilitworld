@@ -1,0 +1,34 @@
+.ababilitworld .fpba .pagination 
+{
+    text-align: center;
+    margin: 20px 0;
+}
+
+.ababilitworld .fpba .pagination a,
+.ababilitworld .fpba .pagination .page-numbers 
+{
+    margin: 0 2px;
+    padding: 8px 16px;
+    border: 1px solid #148e18;
+    text-decoration: none;
+    color: #148e18;
+}
+
+.ababilitworld .fpba .pagination a:hover,
+.ababilitworld .fpba .pagination a:focus,
+.ababilitworld .fpba .pagination .page-numbers:hover,
+.ababilitworld .fpba .pagination .page-numbers:focus
+{
+    background-color: #148e18;
+    color: #fff;
+    border-color: #148e18;
+    cursor: pointer;
+}
+
+.ababilitworld .fpba .pagination .current
+{
+    background-color: #148e18;
+    color: #fff;
+    border-color: #148e18;
+    cursor: pointer;
+}

@@ -6,7 +6,7 @@ namespace Ababilitworld\FlexWordpressByAbabilitworld\Package\Posttype\Base;
 
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
-    FlexTraitByAbabilitworld\Security\Sanitization\Sanitization,
+    FlexTraitByAbabilitworld\Wordpress\Security\Sanitization\Sanitization,
     FlexWordpressByAbabilitworld\Package\Posttype\Contract\Posttype as WpPosttypeInterface
 };
 

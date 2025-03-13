@@ -51,9 +51,12 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         {
             $postType = $config['post_type'] ?? static::class;
 
-            if (!isset(self::$instances[$postType])) {
+            if (!isset(self::$instances[$postType])) 
+            {
                 self::$instances[$postType] = new static($config);
-            } elseif (!empty($config)) {
+            } 
+            elseif (!empty($config)) 
+            {
                 // Re-initialize if external config provided and differs
                 self::$instances[$postType]->initialize($config);
             }
@@ -184,27 +187,40 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          */
         protected function getDefaultLabels(): array
         {
-            $singular = $this->singular ?: 'Item';
-            $plural = $this->plural ?: 'Items';
+            $singular   = $this->singular ?: 'Item';
+            $plural     = $this->plural ?: 'Items';
             $textdomain = $this->textdomain ?: 'default-textdomain';
 
             return [
                 'name'                     => __($plural, $textdomain),
                 'singular_name'            => __($singular, $textdomain),
-                'add_new'                  => __('Add New', $textdomain),
-                'add_new_item'             => sprintf(__('Add New %s', $textdomain), $singular),
-                'edit_item'                => sprintf(__('Edit %s', $textdomain), $singular),
-                'new_item'                 => sprintf(__('New %s', $textdomain), $singular),
-                'view_item'                => sprintf(__('View %s', $textdomain), $singular),
-                'search_items'             => sprintf(__('Search %s', $textdomain), $plural),
-                'not_found'                => sprintf(__('No %s found', $textdomain), strtolower($plural)),
-                'not_found_in_trash'       => sprintf(__('No %s found in Trash', $textdomain), strtolower($plural)),
+                'menu_name'                => __($plural, $textdomain),
+                'name_admin_bar'           => __($plural, $textdomain),
+                'archives'                 => sprintf(__('%s List', $textdomain), $singular),
+                'attributes'               => sprintf(__('%s List', $textdomain), $singular),
+                'parent_item_colon'        => sprintf(__('%s Item : ', $textdomain), $singular),
                 'all_items'                => sprintf(__('All %s', $textdomain), $plural),
-                'archives'                 => sprintf(__('%s Archives', $textdomain), $singular),
-                'attributes'               => sprintf(__('%s Attributes', $textdomain), $singular),
-                'insert_into_item'         => sprintf(__('Insert into %s', $textdomain), strtolower($singular)),
-                'uploaded_to_this_item'    => sprintf(__('Uploaded to this %s', $textdomain), strtolower($singular)),
+                'add_new_item'             => sprintf(__('Add New %s', $textdomain), $singular),
+                'add_new'                  => sprintf(__('Add New %s', $textdomain), $singular),
+                'new_item'                 => sprintf(__('New %s', $textdomain), $singular),
+                'edit_item'                => sprintf(__('Edit %s', $textdomain), $singular),
+                'update_item'              => sprintf(__('Update %s', $textdomain), $singular),
+                'view_item'                => sprintf(__('View %s', $textdomain), $singular),
+                'view_items'               => sprintf(__('View %s', $textdomain), $plural),
+                'search_items'             => sprintf(__('Search %s', $textdomain), $plural),
+                'not_found'                => sprintf(__('%s Not found', $textdomain), $singular),
+                'not_found_in_trash'       => sprintf(__('%s Not found in Trash', $textdomain), $singular),
+                'featured_image'           => sprintf(__('%s Feature Image', $textdomain), $singular),
+                'set_featured_image'       => sprintf(__('Set %s Feature Image', $textdomain), $singular),
+                'remove_featured_image'    => __('Remove Feature Image', $textdomain),
+                'use_featured_image'       => sprintf(__('Use as %s featured image', $textdomain), $singular),
+                'insert_into_item'         => sprintf(__('Insert into %s', $textdomain), $singular),
+                'uploaded_to_this_item'    => sprintf(__('Uploaded to this %s', $textdomain), $singular),
+                'items_list'               => sprintf(__('%s list', $textdomain), $singular),
+                'items_list_navigation'    => sprintf(__('%s list navigation', $textdomain), $singular),
+                'filter_items_list'        => sprintf(__('Filter %s List', $textdomain), $singular),
             ];
+
         }
 
         /**

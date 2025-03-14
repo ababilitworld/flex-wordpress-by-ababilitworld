@@ -79,6 +79,20 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
             ];
         }
 
+        protected function registerHooks(): void
+        {
+            $this->disableGutenberg([$this->posttype]);
+
+            $this->addPostTypeSupport($this->posttype, ['thumbnail', 'excerpt']);
+
+            $this->setTitlePlaceholder($this->posttype, __('Enter Portfolio Title', $this->textdomain));
+
+            $this->customizePostUpdatedMessages($this->posttype, [
+                1 => __('Portfolio updated.', $this->textdomain),
+                6 => __('Portfolio published.', $this->textdomain),
+            ]);
+        }
+
         /**
          * register custom taxonomies
          */

@@ -7,7 +7,8 @@ namespace Ababilitworld\FlexWordpressByAbabilitworld\Package\Posttype\Base;
 use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
     FlexTraitByAbabilitworld\Wordpress\Security\Sanitization\Sanitization,
-    FlexWordpressByAbabilitworld\Package\Posttype\Contract\Posttype as WpPosttypeInterface
+    FlexWordpressByAbabilitworld\Package\Posttype\Contract\Posttype as WpPosttypeInterface,
+    FlexWordpressByAbabilitworld\Package\Posttype\Mixin\Posttype as WpPosttypeMixin
 };
 
 /**
@@ -17,7 +18,7 @@ use Ababilitworld\{
 if (!class_exists(__NAMESPACE__ . '\Posttype')) {
     abstract class Posttype implements WpPosttypeInterface
     {
-        use Standard, Sanitization;
+        use Standard, WpPosttypeMixin;
 
         private static array $instances = [];
 
@@ -122,6 +123,11 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         abstract protected function setDefaultArgs(): array;
 
         /**
+         * Register the required hooks to posttype.
+         */
+        abstract protected function registerHooks(): array;
+
+        /**
          * Get prepared post type.
          */
         protected function getPostType(): string
@@ -149,6 +155,8 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
                     register_post_type($this->getPostType(), $this->getArgs());
                 }
             });
+
+            $this->registerHooks();
         }
 
         /**

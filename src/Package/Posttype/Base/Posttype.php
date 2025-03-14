@@ -125,7 +125,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         /**
          * Register the required hooks to posttype.
          */
-        abstract protected function registerHooks(): array;
+        abstract protected function registerHooks(): void;
 
         /**
          * Get prepared post type.

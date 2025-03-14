@@ -5,7 +5,7 @@ use Ababilitworld\{
     FlexTraitByAbabilitworld\Standard\Standard,
     FlexTraitByAbabilitworld\Security\Sanitization\Sanitization,
     FlexWordpressByAbabilitworld\Package\Interface\Posttype as WordpressInterface,
-    FlexWordpressByAbabilitworld\Package\Base\Posttype as BasePosttype,
+    FlexWordpressByAbabilitworld\Package\Posttype\Base\Posttype as BasePosttype,
 };
 /**
  * Concrete Class Posttype
@@ -155,6 +155,6 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
 
             update_post_meta($post_id, '_blog_post_subtitle', sanitize_text_field($_POST['blog_post_subtitle']));
         }
-        }
-
     }
+
+}

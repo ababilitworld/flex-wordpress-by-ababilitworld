@@ -123,6 +123,21 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         abstract protected function setDefaultArgs(): array;
 
         /**
+         * Set posttype configuration.
+         */
+        abstract protected function config(): void;
+
+        /**
+         * Set posttype labels.
+         */
+        abstract protected function labels(): void;
+
+        /**
+         * Set posttype args.
+         */
+        abstract protected function args(): void;
+
+        /**
          * Register the required hooks to posttype.
          */
         abstract protected function registerHooks(): void;
@@ -143,20 +158,6 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
             $args = $this->args;
             $args['labels'] = $this->labels; // Inject dynamic labels
             return $args;
-        }
-
-        /**
-         * Register post type.
-         */
-        public function register(): void
-        {
-            add_action('init', function () {
-                if (!post_type_exists($this->getPostType())) {
-                    register_post_type($this->getPostType(), $this->getArgs());
-                }
-            });
-
-            $this->registerHooks();
         }
 
         /**
@@ -181,10 +182,10 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         protected function getDefaultConfig(): array
         {
             return [
-                'post_type'  => 'custom_post',
-                'singular'   => 'Custom Post',
-                'plural'     => 'Custom Posts',
-                'textdomain' => 'default-textdomain',
+                'post_type'  => $this->posttype = 'custom_post',
+                'singular'   => $this->singular = 'Custom Post',
+                'plural'     => $this->plural = 'Custom Posts',
+                'textdomain' => $this->textdomain = 'plugin-textdomain',
                 'labels'     => $this->getDefaultLabels(),
                 'args'       => $this->getDefaultArgs(),
             ];
@@ -195,9 +196,9 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          */
         protected function getDefaultLabels(): array
         {
-            $singular   = $this->singular ?: 'Item';
-            $plural     = $this->plural ?: 'Items';
-            $textdomain = $this->textdomain ?: 'default-textdomain';
+            $singular   = $this->singular ;
+            $plural     = $this->plural ;
+            $textdomain = $this->textdomain ;
 
             return [
                 'name'                     => __($plural, $textdomain),
@@ -248,6 +249,20 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
                 'rewrite'           => ['slug' => $this->slug],
                 'capability_type'   => 'post',
             ];
+        }
+
+        /**
+         * Register post type.
+         */
+        public function register(): void
+        {
+            add_action('init', function () {
+                if (!post_type_exists($this->getPostType())) {
+                    register_post_type($this->getPostType(), $this->getArgs());
+                }
+            });
+
+            $this->registerHooks();
         }
     }
 }

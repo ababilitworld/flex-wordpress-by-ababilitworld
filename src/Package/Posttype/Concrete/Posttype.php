@@ -15,6 +15,29 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
 {
     class Posttype extends BasePosttype
     {
+         /**
+         * Set posttype configuration.
+         */
+        protected function config(): void
+        {
+
+        }
+
+        /**
+         * Set posttype labels.
+         */
+        protected function labels(): void
+        {
+
+        }
+
+        /**
+         * Set posttype args.
+         */
+        protected function args(): void
+        {
+            
+        }
 
          /**
          * Default labels for Portfolio.
@@ -83,7 +106,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
         {
             $this->disableGutenberg([$this->posttype]);
 
-            $this->addPostTypeSupport($this->posttype, ['thumbnail', 'excerpt']);
+            $this->addPostTypeSupport($this->posttype, ['thumbnail']);
 
             $this->setTitlePlaceholder($this->posttype, __('Enter Portfolio Title', $this->textdomain));
 

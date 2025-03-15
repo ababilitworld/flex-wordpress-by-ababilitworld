@@ -92,11 +92,50 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         }
 
         /**
-         * Merge arrays only if they differ.
+         * Merge arrays based on internal, external, default, and option rules.
+         *
+         * - If internal is not empty and external is empty, return internal.
+         * - If both internal and external are empty, return default.
+         * - If internal is empty but external is not, merge default with external.
+         * - If both internal and external are not empty:
+         *      - If option is 'replace', return external.
+         *      - If option is 'merge', return merged internal and external.
+         *
+         * @param array $default  Default fallback values.
+         * @param array $internal Internal set values.
+         * @param array $external External provided values.
+         * @param string $option  'replace' to replace internal, 'merge' to merge with internal.
+         * 
+         * @return array
          */
-        private function mergeIfDifferent(array $default, array $external): array
+        private function mergeIfDifferent(array $default, array $internal, array $external, string $option = 'merge'): array
         {
-            return !empty($external) && $external !== $default ? array_merge($default, $external) : $default;
+            // Case 1: Both internal and external empty — return default
+            if (empty($internal) && empty($external)) {
+                return $default;
+            }
+
+            // Case 2: Internal not empty, external empty — return internal
+            if (!empty($internal) && empty($external)) {
+                return $internal;
+            }
+
+            // Case 3: Internal empty, external provided — merge default and external
+            if (empty($internal) && !empty($external)) {
+                return array_merge($default, $external);
+            }
+
+            // Case 4: Both internal and external provided
+            if (!empty($internal) && !empty($external)) {
+                if ($option === 'replace') {
+                    return $external;
+                } elseif ($option === 'merge') {
+                    return array_merge($internal, $external);
+                }
+            }
+
+            // Fallback to internal if no other condition matches
+            return $internal;
         }
 
         /**
@@ -123,26 +162,6 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         abstract protected function setDefaultArgs(): array;
 
         /**
-         * Set posttype configuration.
-         */
-        abstract protected function config(): void;
-
-        /**
-         * Set posttype labels.
-         */
-        abstract protected function labels(): void;
-
-        /**
-         * Set posttype args.
-         */
-        abstract protected function args(): void;
-
-        /**
-         * Register the required hooks to posttype.
-         */
-        abstract protected function registerHooks(): void;
-
-        /**
          * Get prepared post type.
          */
         protected function getPostType(): string
@@ -151,13 +170,52 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         }
 
         /**
+         * Get prepared Config.
+         */
+        protected function getConfig(): array
+        {
+            return $this->config;
+        }
+
+        /**
+         * Get prepared labels.
+         */
+        protected function getLabels(): array
+        {
+            return $this->labels;
+        }
+
+        /**
          * Get prepared arguments.
          */
         protected function getArgs(): array
         {
             $args = $this->args;
-            $args['labels'] = $this->labels; // Inject dynamic labels
+            $args['labels'] = $this->getLabels(); // Inject dynamic labels
             return $args;
+        }
+
+        /**
+         * Dynamically set posttype Config.
+         */
+        abstract protected function setConfig(): void;
+
+        /**
+         * Dynamically set external labels.
+         */
+        abstract protected function setLabels(): void;
+
+        /**
+         * Dynamically set external args.
+         */
+        abstract protected function setArgs(): void;
+
+        /**
+         * Dynamically set external Config.
+         */
+        public function setConfig(array $config): void
+        {
+            $this->config = $this->mergeIfDifferent($this->defaultConfig, $this->config, $config);
         }
 
         /**
@@ -165,7 +223,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          */
         public function setLabels(array $labels): void
         {
-            $this->labels = $this->mergeIfDifferent($this->defaultLabels, $labels);
+            $this->labels = $this->mergeIfDifferent($this->defaultLabels, $this->labels, $labels);
         }
 
         /**
@@ -173,7 +231,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          */
         public function setArgs(array $args): void
         {
-            $this->args = $this->mergeIfDifferent($this->defaultArgs, $args);
+            $this->args = $this->mergeIfDifferent($this->defaultArgs, $this->args, $args);
         }
 
         /**
@@ -181,11 +239,16 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          */
         protected function getDefaultConfig(): array
         {
+            $this->posttype = 'custom_post';
+            $this->singular = 'Custom Post';
+            $this->plural = 'Custom Posts';
+            $this->textdomain = 'plugin-textdomain';
+
             return [
-                'post_type'  => $this->posttype = 'custom_post',
-                'singular'   => $this->singular = 'Custom Post',
-                'plural'     => $this->plural = 'Custom Posts',
-                'textdomain' => $this->textdomain = 'plugin-textdomain',
+                'post_type'  => $this->posttype,
+                'singular'   => $this->singular,
+                'plural'     => $this->plural,
+                'textdomain' => $this->textdomain,
                 'labels'     => $this->getDefaultLabels(),
                 'args'       => $this->getDefaultArgs(),
             ];
@@ -264,5 +327,10 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
 
             $this->registerHooks();
         }
+
+        /**
+         * Register the required hooks to posttype.
+         */
+        abstract protected function registerHooks(): void;
     }
 }

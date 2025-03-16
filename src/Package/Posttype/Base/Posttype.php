@@ -109,7 +109,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          * 
          * @return array
          */
-        private function prepareData(array $default, array $internal, array $external, string $option = 'merge'): array
+        public function prepareData(array $default, array $internal, array $external, string $option = 'merge'): array
         {
             // Case 1: Both internal and external empty — return default
             if (empty($internal) && empty($external)) 

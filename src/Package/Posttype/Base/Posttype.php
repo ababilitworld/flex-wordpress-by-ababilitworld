@@ -40,7 +40,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         /**
          * Private constructor for Singleton pattern.
          */
-        private function __construct(array $config = [])
+        public function __construct(array $config = [])
         {
             $this->initialize($config);
         }
@@ -73,7 +73,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         /**
          * Initialize or reinitialize the post type.
          */
-        private function initialize(array $config): void
+        public function initialize(array $config): void
         {
             $this->defaultConfig = $this->setDefaultConfig([]);
             $this->defaultLabels = $this->setDefaultLabels([]);

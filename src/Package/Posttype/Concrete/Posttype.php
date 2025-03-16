@@ -15,6 +15,13 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
 {
     class Posttype extends BasePosttype
     {
+        public function __construct(array $config)
+        {
+            $defaultConfig = $this->setDefaultConfig([]);
+            $mergedConfig = $this->prepareData($defaultConfig, [], $config);
+            parent::__construct($mergedConfig);
+        }
+
          /**
          * Set posttype configuration.
          */
@@ -25,20 +32,28 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
                 'singular'   => 'Blog Post',
                 'plural'     => 'Blog Posts',
                 'textdomain' => 'blog-textdomain',
-                'labels'     => $this->setDefaultLabels([]),
-                'args'       => [
-                    'public'             => true,
-                    'has_archive'        => true,
-                    'show_ui'            => true,
-                    'show_in_menu'       => true,
-                    'menu_icon'          => 'dashicons-admin-post',
-                    'menu_position'      => 5,
-                    'show_in_rest'       => true,
-                    'supports'           => ['title', 'editor', 'thumbnail', 'excerpt', 'comments'],
-                    'hierarchical'       => false,
-                    'rewrite'            => ['slug' => 'blog'],
-                ],
+                'labels'     => $this->setLabels([]),
+                'args'       => $this->setArgs([]),
             ];
+            // return [
+            //     'post_type'  => 'blog_post',
+            //     'singular'   => 'Blog Post',
+            //     'plural'     => 'Blog Posts',
+            //     'textdomain' => 'blog-textdomain',
+            //     'labels'     => $this->setDefaultLabels([]),
+            //     'args'       => [
+            //         'public'             => true,
+            //         'has_archive'        => true,
+            //         'show_ui'            => true,
+            //         'show_in_menu'       => true,
+            //         'menu_icon'          => 'dashicons-admin-post',
+            //         'menu_position'      => 5,
+            //         'show_in_rest'       => true,
+            //         'supports'           => ['title', 'editor', 'thumbnail', 'excerpt', 'comments'],
+            //         'hierarchical'       => false,
+            //         'rewrite'            => ['slug' => 'blog'],
+            //     ],
+            // ];
         }
 
         /**
@@ -92,8 +107,10 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
                 6 => __('Portfolio published.', $this->textdomain),
             ]);
 
-            $this->registerTaxonomies();
-            $this->registerMetaFields();
+            add_action('init', function () {
+                $this->registerTaxonomies();
+                $this->registerMetaFields();
+            });
         }
 
         /**

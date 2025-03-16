@@ -88,8 +88,8 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
             $this->plural = $this->config['plural'];
             $this->textdomain = $this->config['textdomain'];
 
-            $this->labels = $this->prepareData($this->getDefaultLabels(),$this->getLabels(), $this->setLabels($config['labels']));
-            $this->args = $this->prepareData($this->getDefaultArgs(),$this->getArgs(), $this->setArgs($config['args']));
+            $this->labels = $this->prepareData($this->getDefaultLabels(),$this->getLabels(), $this->setLabels($this->config['labels'] ?? []));
+            $this->args = $this->prepareData($this->getDefaultArgs(),$this->getArgs(), $this->setArgs($this->config['args'] ?? []));
         }
 
         /**
@@ -185,8 +185,8 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
                 'singular'   => $this->singular,
                 'plural'     => $this->plural,
                 'textdomain' => $this->textdomain,
-                'labels'     => $this->getDefaultLabels(),
-                'args'       => $this->getDefaultArgs(),
+                'labels'     => $this->setDefaultLabels([]),
+                'args'       => $this->setDefaultArgs([]),
             ];
         }
 

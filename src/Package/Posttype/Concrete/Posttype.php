@@ -20,12 +20,12 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
          */
         protected function setConfig(array $config): array
         {
-            return $this->config = [
+            return [
                 'post_type'  => 'blog_post',
                 'singular'   => 'Blog Post',
                 'plural'     => 'Blog Posts',
                 'textdomain' => 'blog-textdomain',
-                'labels'     => $this->getDefaultLabels(),
+                'labels'     => $this->setDefaultLabels([]),
                 'args'       => [
                     'public'             => true,
                     'has_archive'        => true,
@@ -46,7 +46,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
          */
         protected function setLabels(array $labels): array
         {
-            return $this->labels = [
+            return [
                 'name'               => __($this->plural, $this->textdomain),
                 'singular_name'      => __($this->singular, $this->textdomain),
                 'add_new'            => __('Add New', $this->textdomain),
@@ -67,7 +67,7 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
          */
         protected function setArgs(array $args): array
         {
-            return $this->args = [
+            return [
                 'public'            => true,
                 'has_archive'       => true,
                 'rewrite'           => ['slug' => $this->slug],

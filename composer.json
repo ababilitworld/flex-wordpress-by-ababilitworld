@@ -1,6 +1,6 @@
 {
     "name": "ababilitworld/flex-wordpress-by-ababilitworld",
-    "description": "A package to manage wordpress framework by Ababil IT World.",
+    "description": "A flexible, Composer-managed, package to handle WordPress framework by following modern WordPress and OOP PHP best practices by Ababil IT World.",
     "keywords": ["wordpress", "php"],
     "type": "library",
     "license": "MIT",

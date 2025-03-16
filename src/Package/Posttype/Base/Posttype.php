@@ -75,20 +75,21 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          */
         private function initialize(array $config): void
         {
-            $this->defaultConfig = $this->setDefaultConfig();
-            $this->config = $this->mergeIfDifferent($this->defaultConfig, $this->sanitizeConfig($config));
+            $this->defaultConfig = $this->setDefaultConfig([]);
+            $this->defaultLabels = $this->setDefaultLabels([]);
+            $this->defaultArgs = $this->setDefaultArgs([]);
+            
+            
+            $this->config = $this->prepareData($this->getDefaultConfig(), $this->getConfig(), $this->setConfig($config));
 
             $this->posttype = $this->config['post_type'];
-            $this->slug = $this->posttype;
+            $this->slug = $this->config['post_type'];
             $this->singular = $this->config['singular'];
             $this->plural = $this->config['plural'];
             $this->textdomain = $this->config['textdomain'];
 
-            $this->defaultLabels = $this->setDefaultLabels();
-            $this->labels = $this->mergeIfDifferent($this->defaultLabels, $this->config['labels'] ?? []);
-
-            $this->defaultArgs = $this->setDefaultArgs();
-            $this->args = $this->mergeIfDifferent($this->defaultArgs, $this->config['args'] ?? []);
+            $this->labels = $this->prepareData($this->getDefaultLabels(),$this->getLabels(), $this->setLabels($config['labels']));
+            $this->args = $this->prepareData($this->getDefaultArgs(),$this->getArgs(), $this->setArgs($config['args']));
         }
 
         /**
@@ -108,28 +109,35 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          * 
          * @return array
          */
-        private function mergeIfDifferent(array $default, array $internal, array $external, string $option = 'merge'): array
+        private function prepareData(array $default, array $internal, array $external, string $option = 'merge'): array
         {
             // Case 1: Both internal and external empty — return default
-            if (empty($internal) && empty($external)) {
+            if (empty($internal) && empty($external)) 
+            {
                 return $default;
             }
 
             // Case 2: Internal not empty, external empty — return internal
-            if (!empty($internal) && empty($external)) {
+            if (!empty($internal) && empty($external)) 
+            {
                 return $internal;
             }
 
             // Case 3: Internal empty, external provided — merge default and external
-            if (empty($internal) && !empty($external)) {
+            if (empty($internal) && !empty($external))
+            {
                 return array_merge($default, $external);
             }
 
             // Case 4: Both internal and external provided
-            if (!empty($internal) && !empty($external)) {
-                if ($option === 'replace') {
+            if (!empty($internal) && !empty($external)) 
+            {
+                if ($option === 'replace') 
+                {
                     return $external;
-                } elseif ($option === 'merge') {
+                } 
+                elseif ($option === 'merge') 
+                {
                     return array_merge($internal, $external);
                 }
             }
@@ -147,21 +155,6 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         }
 
         /**
-         * Set default configuration.
-         */
-        abstract protected function setDefaultConfig(): array;
-
-        /**
-         * Set default labels.
-         */
-        abstract protected function setDefaultLabels(): array;
-
-        /**
-         * Set default args.
-         */
-        abstract protected function setDefaultArgs(): array;
-
-        /**
          * Get prepared post type.
          */
         protected function getPostType(): string
@@ -170,74 +163,17 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
         }
 
         /**
-         * Get prepared Config.
+         * Default fallback config method if not overridden.
          */
-        protected function getConfig(): array
+        protected function getDefaultConfig(): array
         {
-            return $this->config;
-        }
-
-        /**
-         * Get prepared labels.
-         */
-        protected function getLabels(): array
-        {
-            return $this->labels;
-        }
-
-        /**
-         * Get prepared arguments.
-         */
-        protected function getArgs(): array
-        {
-            $args = $this->args;
-            $args['labels'] = $this->getLabels(); // Inject dynamic labels
-            return $args;
+            return $this->defaultConfig;
         }
 
         /**
          * Dynamically set posttype Config.
          */
-        abstract protected function setConfig(): void;
-
-        /**
-         * Dynamically set external labels.
-         */
-        abstract protected function setLabels(): void;
-
-        /**
-         * Dynamically set external args.
-         */
-        abstract protected function setArgs(): void;
-
-        /**
-         * Dynamically set external Config.
-         */
-        public function setConfig(array $config): void
-        {
-            $this->config = $this->mergeIfDifferent($this->defaultConfig, $this->config, $config);
-        }
-
-        /**
-         * Dynamically set external labels.
-         */
-        public function setLabels(array $labels): void
-        {
-            $this->labels = $this->mergeIfDifferent($this->defaultLabels, $this->labels, $labels);
-        }
-
-        /**
-         * Dynamically set external arguments.
-         */
-        public function setArgs(array $args): void
-        {
-            $this->args = $this->mergeIfDifferent($this->defaultArgs, $this->args, $args);
-        }
-
-        /**
-         * Default fallback config method if not overridden.
-         */
-        protected function getDefaultConfig(): array
+        protected function setDefaultConfig(array $config): array
         {
             $this->posttype = 'custom_post';
             $this->singular = 'Custom Post';
@@ -258,6 +194,14 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
          * Default fallback labels if not overridden.
          */
         protected function getDefaultLabels(): array
+        {
+            return $this->defaultLabels;
+        }
+
+        /**
+         * Dynamically set external labels.
+         */
+        protected function setDefaultLabels(array $labels): array
         {
             $singular   = $this->singular ;
             $plural     = $this->plural ;
@@ -292,13 +236,20 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
                 'items_list_navigation'    => sprintf(__('%s list navigation', $textdomain), $singular),
                 'filter_items_list'        => sprintf(__('Filter %s List', $textdomain), $singular),
             ];
-
         }
 
         /**
          * Default fallback args if not overridden.
          */
         protected function getDefaultArgs(): array
+        {
+            return $this->defaultArgs;
+        }
+
+        /**
+         * Dynamically set external args.
+         */
+        protected function setDefaultArgs(array $args): array
         {
             return [
                 'public'            => true,
@@ -312,6 +263,54 @@ if (!class_exists(__NAMESPACE__ . '\Posttype')) {
                 'rewrite'           => ['slug' => $this->slug],
                 'capability_type'   => 'post',
             ];
+        }
+
+        /**
+         * Get prepared Config.
+         */
+        protected function getConfig(): array
+        {
+            return $this->config;
+        }
+
+        /**
+         * Dynamically set posttype Config.
+         */
+        protected function setConfig(array $config): array
+        {
+            return [];
+        }
+
+        /**
+         * Get prepared labels.
+         */
+        protected function getLabels(): array
+        {
+            return $this->labels;
+        }
+
+        /**
+         * Dynamically set external labels.
+         */
+        protected function setLabels(array $labels): array
+        {
+            return [];
+        }
+
+        /**
+         * Get prepared arguments.
+         */
+        protected function getArgs(): array
+        {
+            return $this->args;
+        }
+
+        /**
+         * Dynamically set external args.
+         */
+        protected function setArgs(array $args): array
+        {
+            return [];
         }
 
         /**

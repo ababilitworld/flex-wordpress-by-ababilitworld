@@ -18,70 +18,9 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
          /**
          * Set posttype configuration.
          */
-        protected function config(): void
+        protected function setConfig(array $config): array
         {
-
-        }
-
-        /**
-         * Set posttype labels.
-         */
-        protected function labels(): void
-        {
-
-        }
-
-        /**
-         * Set posttype args.
-         */
-        protected function args(): void
-        {
-            
-        }
-
-         /**
-         * Default labels for Portfolio.
-         */
-        protected function setDefaultLabels(): array
-        {
-            return [
-                'name'               => __($this->plural, $this->textdomain),
-                'singular_name'      => __($this->singular, $this->textdomain),
-                'add_new'            => __('Add New', $this->textdomain),
-                'add_new_item'       => sprintf(__('Add New %s', $this->textdomain), $this->singular),
-                'edit_item'          => sprintf(__('Edit %s', $this->textdomain), $this->singular),
-                'new_item'           => sprintf(__('New %s', $this->textdomain), $this->singular),
-                'view_item'          => sprintf(__('View %s', $this->textdomain), $this->singular),
-                'all_items'          => sprintf(__('All %s', $this->textdomain), $this->plural),
-                'search_items'       => sprintf(__('Search %s', $this->textdomain), $this->plural),
-                'not_found'          => sprintf(__('No %s found', $this->textdomain), strtolower($this->plural)),
-                'not_found_in_trash' => sprintf(__('No %s found in Trash', $this->textdomain), strtolower($this->plural)),
-            ];
-        }
-
-        /**
-         * Default args for Portfolio.
-         */
-        protected function setDefaultArgs(): array
-        {
-            return [
-                'public'            => true,
-                'has_archive'       => true,
-                'rewrite'           => ['slug' => $this->slug],
-                'show_ui'           => true,
-                'show_in_menu'      => true,
-                'menu_icon'         => 'dashicons-portfolio',
-                'show_in_rest'      => true,
-                'supports'          => ['title', 'editor', 'thumbnail', 'excerpt'],
-            ];
-        }
-
-        /**
-         * Default config for Portfolio.
-         */
-        protected function setDefaultConfig(): array
-        {
-            return [
+            return $this->config = [
                 'post_type'  => 'blog_post',
                 'singular'   => 'Blog Post',
                 'plural'     => 'Blog Posts',
@@ -102,6 +41,44 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
             ];
         }
 
+        /**
+         * Set posttype labels.
+         */
+        protected function setLabels(array $labels): array
+        {
+            return $this->labels = [
+                'name'               => __($this->plural, $this->textdomain),
+                'singular_name'      => __($this->singular, $this->textdomain),
+                'add_new'            => __('Add New', $this->textdomain),
+                'add_new_item'       => sprintf(__('Add New %s', $this->textdomain), $this->singular),
+                'edit_item'          => sprintf(__('Edit %s', $this->textdomain), $this->singular),
+                'new_item'           => sprintf(__('New %s', $this->textdomain), $this->singular),
+                'view_item'          => sprintf(__('View %s', $this->textdomain), $this->singular),
+                'all_items'          => sprintf(__('All %s', $this->textdomain), $this->plural),
+                'search_items'       => sprintf(__('Search %s', $this->textdomain), $this->plural),
+                'not_found'          => sprintf(__('No %s found', $this->textdomain), strtolower($this->plural)),
+                'not_found_in_trash' => sprintf(__('No %s found in Trash', $this->textdomain), strtolower($this->plural)),
+            ];
+
+        }
+
+        /**
+         * Set posttype args.
+         */
+        protected function setArgs(array $args): array
+        {
+            return $this->args = [
+                'public'            => true,
+                'has_archive'       => true,
+                'rewrite'           => ['slug' => $this->slug],
+                'show_ui'           => true,
+                'show_in_menu'      => true,
+                'menu_icon'         => 'dashicons-portfolio',
+                'show_in_rest'      => true,
+                'supports'          => ['title', 'editor', 'thumbnail', 'excerpt'],
+            ];
+        }
+
         protected function registerHooks(): void
         {
             $this->disableGutenberg([$this->posttype]);
@@ -114,6 +91,9 @@ if (!class_exists(__NAMESPACE__ . '\Posttype'))
                 1 => __('Portfolio updated.', $this->textdomain),
                 6 => __('Portfolio published.', $this->textdomain),
             ]);
+
+            $this->registerTaxonomies();
+            $this->registerMetaFields();
         }
 
         /**
